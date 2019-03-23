@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-kubernetes-demo
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: nginx-kubernetes-demo.local
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx-kubernetes-demo
+          servicePort: 80

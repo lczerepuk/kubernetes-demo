@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elk
+spec:
+  serviceName: "elk"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elk
+  template:
+    metadata:
+      labels:
+        app: elk
+    spec:
+      containers:
+      - name: elk
+        image: docker.elastic.co/elasticsearch/elasticsearch:6.5.4
+        args:
+        - bin/elasticsearch
+        - -Ecluster.name=elasticsearch-BM
+        - -Ediscovery.zen.minimum_master_nodes=1
+        - -Ediscovery.zen.ping.unicast.hosts=elasticsearch-discovery
+        - -Enode.master=true
+        - -Enode.data=false
+        - -Enode.ingest=false
+        ports:
+        - containerPort: 9200
+          name: access
+        - containerPort: 9300
+          name: transport
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch-discovery
+  labels:
+    app: elk
+spec:
+  selector:
+    app: elk
+  ports:
+  - name: transport
+    port: 9300
+    protocol: TCP
+  clusterIP: None

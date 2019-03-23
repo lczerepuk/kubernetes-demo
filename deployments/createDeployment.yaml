@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-kubernetes-demo
+  namespace: kubernetes-demo
+  labels:
+    app: nginx-kubernetes-demo
+spec:
+  selector:
+    matchLabels:
+      app: nginx-kubernetes-demo
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx-kubernetes-demo
+    spec:
+      containers:
+      - name: nginx-kubernetes-demo
+        image: nginx
+        ports:
+        - containerPort: 80
