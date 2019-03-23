@@ -11,5 +11,5 @@ spec:
       paths:
       - path: /
         backend:
-          serviceName: nginx-kubernetes-demo
+          serviceName: kubernetes-demo
           servicePort: 80
