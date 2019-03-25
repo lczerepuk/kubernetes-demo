@@ -1,0 +1,26 @@
+# Apply and deletes resources in YAML
+$ kubectl apply -f file.yaml 
+$ kubectl apply -f directory/
+$ kubectl delete -f file.yaml
+$ kubectl delete -f direcotory.
+
+# Delete/Restart pod
+$ kubectl delete pod POD_NAME
+
+# Show and describe resources
+$ kubectl get pods/nodes/service/ingress/deployment/...
+$ kubectl describe pods/nodes/service/ingres/depolyment/...
+
+# Logs 
+$ kubectl logs POD_NAME
+$ kubectl logs POD_NAME -c CONTAINER_NAME
+
+# Scaling up/down
+$ kubectl scale deployment/nginx-kubernetes-demo --replicas=1
+$ kubectl scale deployment/nginx-kubernetes-demo --replicas=5
+
+# Package manager
+$ helm
+$ helm install --name  nginx-ingress stable/nginx-ingress
+$ helm list
+$ helm delete --purge RELEASE_NAME
