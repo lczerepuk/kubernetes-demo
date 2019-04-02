@@ -1,3 +1,7 @@
+# Namespaces && contexts
+$ kubectl config get-contexts
+$ kubectl config set-context admin-k8s-bm --namespace=kuberentes-demo
+
 # Apply and deletes resources in YAML
 $ kubectl apply -f file.yaml 
 $ kubectl apply -f directory/
