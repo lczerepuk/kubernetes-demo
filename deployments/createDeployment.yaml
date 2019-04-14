@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx-kubernetes-demo
-        image: nginx
+        image: nginx:1.14
         ports:
         - containerPort: 80
 

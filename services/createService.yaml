@@ -6,6 +6,7 @@ metadata:
 spec:
   selector:
     app: nginx-kubernetes-demo
+    env: test
   ports:
   - protocol: TCP
     port: 80
