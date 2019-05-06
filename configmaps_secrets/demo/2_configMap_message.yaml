@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-message
+data:
+  mymessage: |2
+    Im mounted from configMap

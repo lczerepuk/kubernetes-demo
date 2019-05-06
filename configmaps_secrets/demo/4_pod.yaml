@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql
+  namespace: default
+  labels:
+    name: mysql
+spec:
+  containers:
+  - name: mysql
+    image: mysql:8
+    resources: {}
+    env:
+    - name: MYSQL_DATABASE
+      valueFrom:
+        configMapKeyRef:
+          name: mysql-user-db-definition
+          key: database
+    - name: MYSQL_USER
+      valueFrom:
+        configMapKeyRef:
+          name: mysql-user-db-definition
+          key: username
+    - name: MYSQL_ROOT_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-passwords
+          key: rootpassword
+    - name: MYSQL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-passwords
+          key: userpassword
+    ports:
+      - containerPort: 3306
+    volumeMounts:
+    - name: message
+      mountPath: /tmp/message
+      subPath: mymessage
+  volumes:
+  - name: message
+    configMap:
+      name: mysql-message
