@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: node-example
-  namespace: kubernetes-demo
+  namespace: szkolenie
 spec:
   replicas: 1
   template:
@@ -26,7 +26,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: node-example
-  namespace: kubernetes-demo
+  namespace: szkolenie
   labels:
     app: node-example
 spec:
